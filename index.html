@@ -15,7 +15,19 @@ details.fold[open]>summary{margin-bottom:12px}
 .grid input[type="date"]{display:block;width:100%;min-width:0;max-width:100%;box-sizing:border-box}
 @media (max-width:850px){.grid:has(.sessionDate){grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media (max-width:430px){.grid:has(.sessionDate){grid-template-columns:minmax(0,1fr)}}
-</style></head><body><header><div><h1>⛰ Carnet de grimpe</h1><small>Escalade · 3e · suivi des ascensions et des compétences</small></div><span id="modeLabel" class="badge">Mode élève</span></header><main class="wrap"><nav class="tabs"><button data-tab="eleve" class="active">🧗 Élève</button><button data-tab="prof">🧭 Professeur</button></nav><div id="content"></div></main><footer>Données enregistrées sur cet appareil · Effectuer régulièrement une sauvegarde</footer><script>
+<style>
+/* V11: dates iPad - dimensionnement explicite, sans largeur minimale native */
+.grid:has(.sessionDate){display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px 16px}
+.grid:has(.sessionDate) > *{min-width:0;width:100%;max-width:100%;overflow:hidden}
+.grid:has(.sessionDate) .field{min-width:0;width:100%;max-width:100%;flex:initial}
+.grid:has(.sessionDate) input[type=date]{display:block;min-width:0!important;width:100%!important;max-width:100%!important;box-sizing:border-box;font-size:16px;padding:9px 6px;appearance:none;-webkit-appearance:none}
+.grid:has(.sessionDate) input[type=date]::-webkit-date-and-time-value{min-width:0;text-align:left}
+@media(min-width:1100px){.grid:has(.sessionDate){grid-template-columns:repeat(4,minmax(0,1fr))}}
+@media(max-width:520px){.grid:has(.sessionDate){grid-template-columns:minmax(0,1fr)}}
+.visuallyHiddenPanel{display:none!important}
+details.fold>summary.teacherPanelTitle{display:flex;align-items:center;justify-content:space-between;gap:8px;list-style:revert}
+details.fold>summary.teacherPanelTitle .panelControls{margin-left:auto}
+</style></style></head><body><header><div><h1>⛰ Carnet de grimpe</h1><small>Escalade · 3e · suivi des ascensions et des compétences</small></div><span id="modeLabel" class="badge">Mode élève</span></header><main class="wrap"><nav class="tabs"><button data-tab="eleve" class="active">🧗 Élève</button><button data-tab="prof">🧭 Professeur</button></nav><div id="content"></div></main><footer>Données enregistrées sur cet appareil · Effectuer régulièrement une sauvegarde</footer><script>
 const KEY='grimpe-v1';const grades=['4B','4B+','4C','4C+','5A','5A+','5B','5B+','5C','5C+','6A','6A+','6B'];const domains={securite:['Contrôler son équipement','Effectuer le contrôle croisé','Assurer avec le GriGri selon le protocole','Communiquer et gérer la descente'],motricite:['Pousser sur les jambes','Placer précisément les pieds','Maintenir son équilibre','Grimper avec continuité'],lecture:['Repérer les prises avant de partir','Anticiper les passages difficiles','Adapter son itinéraire','Choisir une voie adaptée'],responsabilite:['Tenir son rôle dans la cordée','Observer utilement un partenaire','Donner un conseil précis','Respecter les zones de sécurité']};
 const defaultDomains=()=>Object.fromEntries(Object.entries(domains).map(([k,v])=>[k,v.map((label,i)=>({id:k+'-'+i,label}))]));const starter=()=>({version:1,pin:'',students:[],routes:[{id:'A01',sector:'Gauche',grade:'4B',color:'Verte',active:true},{id:'A02',sector:'Gauche',grade:'5A',color:'Bleue',active:true},{id:'B01',sector:'Centre',grade:'5B',color:'Rouge',active:true},{id:'C01',sector:'Droite',grade:'6A',color:'Jaune',active:true}],ascents:[],skills:{},session:1,classes:[{id:'classe-1',name:'3e A'}],activeClassId:'classe-1',skillCatalog:defaultDomains(),sessionDates:{}});let db;try{db=JSON.parse(localStorage.getItem(KEY))||starter()}catch{db=starter()}if(!Array.isArray(db.classes)||!db.classes.length){db.classes=[{id:'classe-1',name:'3e A'}];db.activeClassId='classe-1';db.students.forEach(x=>x.classId='classe-1');db.ascents.forEach(x=>x.classId='classe-1')}db.skillCatalog??=defaultDomains();db.sessionDates??={};if(!db.classes.some(c=>c.id===db.activeClassId))db.activeClassId=db.classes[0].id;db.students.forEach(x=>x.classId??=db.classes[0].id);db.ascents.forEach(a=>a.classId??=getClassForStudent(a.studentId));function getClassForStudent(id){return db.students.find(x=>x.id===id)?.classId||db.classes[0].id}let tab='eleve',prof=false,studentId='',filter='pending';const el=document.getElementById('content');const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));const uid=()=>crypto.randomUUID?.()||String(Date.now())+Math.random();const save=()=>{try{localStorage.setItem(KEY,JSON.stringify(db))}catch{alert('Stockage indisponible : exportez une sauvegarde.')}};const gradeVal=g=>grades.indexOf(g);const gradeAvg=arr=>arr.length?grades[Math.round(arr.reduce((a,x)=>a+gradeVal(x),0)/arr.length)]:'—';const currentClass=()=>db.classes.find(c=>c.id===db.activeClassId);const classStudents=()=>db.students.filter(x=>x.classId===db.activeClassId);const classAscents=()=>db.ascents.filter(a=>a.classId===db.activeClassId);const getStudent=id=>db.students.find(x=>x.id===id);const getRoute=id=>db.routes.find(x=>x.id===id);const statusName={pending:'En attente',validated:'Validée',rejected:'Rejetée'};const outcomeName={attempt:'Tentative inachevée',rest:'Réussie avec repos',clean:'Réussie sans repos'};function setTab(t){if(t==='eleve')prof=false;tab=t;document.querySelectorAll('[data-tab]').forEach(b=>b.classList.toggle('active',b.dataset.tab===t));render()}document.querySelectorAll('[data-tab]').forEach(b=>b.onclick=()=>setTab(b.dataset.tab));const masteryNames=['Non évalué','Non maîtrisé','Maîtrise fragile','Maîtrise satisfaisante','Très bonne maîtrise'];
 // Older saves used 0..3: map 1..3 to 1,3,4, so a prior mastered skill stays mastered.
@@ -56,16 +68,19 @@ function setupTeacherOrder(){
      let heading=node.querySelector(':scope > h2');
      if(!heading){heading=node.querySelector(':scope > .teacherGroupHeading');
        if(!heading){heading=document.createElement('div');heading.className='teacherGroupHeading';node.prepend(heading)}
-       heading.textContent=labels[node.dataset.panelKey]||'Panneau';
+       const summary=node.querySelector('details.fold > summary');
+       if(summary){heading.classList.add('visuallyHiddenPanel');heading.textContent='';}
+       else heading.textContent=labels[node.dataset.panelKey]||'Gestion';
      }
      heading.classList.add('teacherPanelTitle');
-     let controls=heading.querySelector('.panelControls');
+     const summary=node.querySelector('details.fold > summary');if(summary){heading.classList.add('visuallyHiddenPanel');heading=summary;heading.classList.add('teacherPanelTitle')}let controls=heading.querySelector('.panelControls');
      if(!controls){controls=document.createElement('span');controls.className='panelControls';heading.appendChild(controls)}
      controls.replaceChildren();
      const up=document.createElement('button');up.type='button';up.textContent='↑';up.title='Monter ce volet';up.setAttribute('aria-label','Monter ce volet');up.disabled=i===0;
      const down=document.createElement('button');down.type='button';down.textContent='↓';down.title='Descendre ce volet';down.setAttribute('aria-label','Descendre ce volet');down.disabled=i===ordered.length-1;
      up.onclick=()=>move(node,-1);down.onclick=()=>move(node,1);
      controls.append(up,down);
+     if(heading.tagName==='SUMMARY')for(const b of [up,down])b.addEventListener('click',e=>{e.preventDefault();e.stopPropagation()});
    });
  }
  function move(node,d){
