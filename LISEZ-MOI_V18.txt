@@ -1,0 +1,17 @@
+CARNET DE GRIMPE — V18
+
+MODIFICATIONS
+- Profil professeur > Catalogue des voies : présentation sous forme de volets déroulants par secteur.
+- Dans chaque secteur : voies triées par couleur, cotation, identifiant technique.
+- Présentation de chaque voie : couleur > cotation > identifiant secondaire.
+- Boutons Modifier, Archiver et Réactiver inchangés.
+- État ouvert/fermé des secteurs conservé pendant les rafraîchissements de l’interface.
+- Les voies archivées sont toujours visibles, distinguées visuellement.
+- Cache PWA incrémenté en V18.
+
+INSTALLATION
+1. Exporter une sauvegarde JSON avant de remplacer la version en ligne.
+2. Remplacer les fichiers du site GitHub Pages par ceux présents dans cette archive (à la racine du site).
+3. Actualiser la page et relancer l’application iPad si nécessaire. Vérifier la mention V18 en bas à droite.
+
+Les données continuent d'utiliser le même format de sauvegarde et le même stockage local.
