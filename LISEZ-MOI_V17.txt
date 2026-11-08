@@ -1,0 +1,39 @@
+CARNET DE GRIMPE — V17
+======================
+
+MISE À JOUR
+1. Réaliser une sauvegarde JSON depuis la version actuelle de l'application.
+2. Décompresser cette archive.
+3. Remplacer les fichiers du dépôt GitHub Pages (index.html, sw.js,
+   manifest.webmanifest, icon-192.png, icon-512.png) par ceux de cette archive.
+4. Attendre la publication GitHub Pages, puis rouvrir l'application sur iPad.
+5. Si la V16 reste affichée, fermer complètement la PWA, rouvrir la page
+   dans Safari en ligne, actualiser puis rouvrir l'application.
+
+NOUVEAUTÉS
+• Enregistrement élève en trois étapes : choix du secteur, de la voie,
+  puis du résultat. Un bouton Quitter/Annuler permet d'abandonner.
+• Les codes techniques des voies n'apparaissent plus dans le parcours
+  élève ni dans son historique : couleur, secteur et cotation sont affichés.
+• Les élèves peuvent modifier/supprimer leurs ascensions EN ATTENTE
+  de validation uniquement (via Historique).
+• Liste de profils élèves triée alphabétiquement.
+• Ouverture des panneaux conservée après les rechargements d'interface.
+• Couleurs et bordures différenciant les espaces par fonction.
+• Version V17 affichée en bas à droite et cache applicatif versionné.
+
+IMPORTANT
+• Les données restent enregistrées localement sur le même appareil.
+• Les fichiers de l'application n'ont pas vocation à héberger des données
+  nominatives des élèves. Éviter les noms complets.
+• Une ascension déjà validée ou rejetée ne peut être modifiée/supprimée
+  que dans l'espace professeur.
+• Si plusieurs voies d'un même secteur ont exactement la même couleur et
+  la même cotation, leurs boutons élèves peuvent sembler identiques :
+  attribuer une couleur ou cotation permettant de les distinguer.
+
+TESTS RÉALISÉS
+Tests d'interface en navigateur : liste alphabétique, parcours
+secteur→voie→résultat, modification et suppression avant validation,
+et persistance des panneaux après changement de filtre professeur.
+Tester également l'affichage et le cache sur l'iPad réel après mise en ligne.
