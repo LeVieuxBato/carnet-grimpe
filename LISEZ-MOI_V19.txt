@@ -1,0 +1,17 @@
+CARNET DE GRIMPE — V19 (09/11/2026)
+
+ÉVOLUTION ESPACE ÉLÈVE :
+- Chaque secteur apparaît sur une grande tuile : mot SECTEUR et nom/numéro en très gros.
+- Le nombre de voies n’est plus affiché sur le choix des secteurs.
+- Deuxième écran : couleur clairement distinguée + cotation (sans identifiant technique).
+- Troisième écran : trois grandes options tactiles pour le résultat. Choix explicite obligatoire.
+- Le champ du nombre de repos n’apparaît que pour « Réussie avec repos ».
+- Toujours possible de revenir, quitter et modifier les ascensions en attente.
+
+INSTALLATION
+1. Dans l’application actuelle, exporter une sauvegarde JSON.
+2. Remplacer index.html, sw.js, manifest.webmanifest et les icônes sur votre hébergement GitHub Pages.
+3. Actualiser Safari ; contrôler le badge V19, puis rouvrir l’application depuis l’écran d’accueil.
+4. Tester sur iPad avec un élève fictif avant de l’utiliser en classe.
+
+Données locales et format de sauvegarde conservés. Ne pas vider les données Safari sans sauvegarde.
